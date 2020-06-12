@@ -1,0 +1,14 @@
+# Enable Python support and load DesignScript library
+import clr
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+
+# The inputs to this node will be stored as a list in the IN variables.
+input = IN[0]
+
+#Append to output
+output=[]
+for i in input:
+	if str(i)!="[]":
+		output.append(i)
+OUT = output
