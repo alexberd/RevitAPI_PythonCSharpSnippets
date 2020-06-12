@@ -17,7 +17,7 @@ from Autodesk.Revit.DB import *
 doc = DocumentManager.Instance.CurrentDBDocument
 
 
-
+#Create ElementCollector
 selection = FilteredElementCollector(doc);
 
 #Select Built-in Cateogry based on the follow link
@@ -28,6 +28,7 @@ selection.OfCategory(BuiltInCategory.OST_Views)
 #Define if element is a type element or not
 #selection.WhereElementIsNotElementType();
 
+#Append the elements to output
 output=[]
 for i in selection:
 	output.append(i)
