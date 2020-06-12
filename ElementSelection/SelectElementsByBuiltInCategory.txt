@@ -16,7 +16,6 @@ from Autodesk.Revit.DB import *
 #Select Current Document
 doc = DocumentManager.Instance.CurrentDBDocument
 
-
 #Create ElementCollector
 selection = FilteredElementCollector(doc);
 
@@ -32,5 +31,4 @@ selection.OfCategory(BuiltInCategory.OST_Views)
 output=[]
 for i in selection:
 	output.append(i)
-
 OUT = output
