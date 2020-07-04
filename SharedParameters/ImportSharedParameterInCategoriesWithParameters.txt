@@ -1,0 +1,55 @@
+//Reference https://spiderinnet.typepad.com/blog/2011/05/parameter-of-revit-api-31-create-project-parameter.html
+void ImportSharedParameterInCategoriesWithParameters(Document doc_, string SharedParameterFile_, string ParameterGroup_, string ParameterName_)
+{
+    commandData.Application.Application.SharedParametersFilename = SharedParameterFile_;
+    DefinitionFile spFile = commandData.Application.Application.OpenSharedParameterFile();
+    foreach (DefinitionGroup dG in spFile.Groups)
+    {
+        if (dG.Name == ParameterGroup_)
+        {
+            var v = (from ExternalDefinition d in dG.Definitions
+                     where d.Name == ParameterName_
+                     select d);
+            using (Transaction t = new Transaction(doc_))
+            {
+                foreach (ExternalDefinition eD in v)
+                {
+                    CategorySet catSet = commandData.Application.Application.Create.NewCategorySet();
+                    foreach (BuiltInCategory b in Enum.GetValues(typeof(BuiltInCategory)))
+                    {
+                        Category cat = null;
+                        try
+                        {
+                            cat = doc_.Settings.Categories.get_Item(b);
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.Print(ex.ToString());
+                        }
+                        if (cat != null && cat.CategoryType == CategoryType.Model && cat.AllowsBoundParameters && cat.HasMaterialQuantities)
+                        {
+                            catSet.Insert(cat);
+                        }
+                    }
+                    {
+                        {
+                            InstanceBinding newIB = commandData.Application.Application.Create.NewInstanceBinding(catSet);
+                            try
+                            {
+                                t.Start("Add Space Shared Parameters");
+                                BindingMap map = doc_.ParameterBindings;
+                                map.Insert(eD, newIB, BuiltInParameterGroup.PG_IDENTITY_DATA);
+                                t.Commit();
+                                Debug.Print("Parameters added: " + catSet.ToString());
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.Print(ex.ToString());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
