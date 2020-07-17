@@ -1,0 +1,7 @@
+#By @HossZamani (https://forum.dynamobim.com/t/naming-dynamo-transactions-in-revit/21149)
+
+from Autodesk.Revit.DB import Transaction
+t = Transaction(doc, 'Name')
+t.Start()
+#Do stuff
+t.Commit() 
