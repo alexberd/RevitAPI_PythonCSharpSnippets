@@ -1,0 +1,4 @@
+string ProjectName = doc.ProjectInformation.Name;
+string CentralModel = ModelPathUtils.ConvertModelPathToUserVisiblePath((doc.GetWorksharingCentralModelPath()));
+string FileNameWithExtension = Path.GetFileName(CentralModel);
+string FileName = FileNameWithExtension.Substring(0, FileNameWithExtension.Length-4);
