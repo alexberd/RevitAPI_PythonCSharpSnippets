@@ -1,0 +1,54 @@
+//Provide a model path
+String path="c:\\myRevitModel.rvt"
+
+//Open your model a first time
+Document doc = commandData.Application.OpenAndActivateDocument(path).Document;
+
+//Open your model temporarily for a second time
+Document doc_temp = commandData.Application.OpenAndActivateDocument(path).Document;
+
+//FIND ALL PHYSICAL ELEMENTS FROM THE PRIMARY DESIGN OPTIONS IN THE TEMPORARY MODEL
+FilteredElementCollector finalCollectorTemp = new FilteredElementCollector(doc_temp);
+PrimaryDesignOptionMemberFilter filterTemp = new PrimaryDesignOptionMemberFilter(false);
+finalCollectorTemp.WherePasses(filterTemp);
+finalCollectorTemp.WhereElementIsNotElementType();
+finalCollectorTemp.WhereElementIsViewIndependent();
+
+List<Element> TempElements = new List<Element>();
+List<ElementId> TempElementsIDsList = new List<ElementId>();
+foreach (Element i in finalCollectorTemp)
+{
+    if ((null != i.Category) && (null != i.get_Geometry(new Options())))
+    {
+        TempElements.Add(i);
+        TempElementsIDsList.Add(i.Id);
+    }
+}
+
+//SELECTING ALL DESIGN OPTION SETS AND DESIGN OPTIONS
+finalCollector = new FilteredElementCollector(doc);
+finalCollector.OfCategory(BuiltInCategory.OST_DesignOptions);
+finalCollector.UnionWith((new FilteredElementCollector(doc)).OfCategory(BuiltInCategory.OST_DesignOptionSets));
+ICollection<ElementId> ElementIDs = finalCollector.ToElementIds();
+
+//DELETING ALL DESIGN OPTION SETS AND DESIGN OPTIONS
+using (Transaction tx = new Transaction(doc))
+{
+    tx.Start("Deleting all design options sets and all design options");
+    XYZ translation = new XYZ();
+    doc.Delete(ElementIDs);
+    tx.Commit();
+}
+
+//COPYING THE DESIGN OPTION ELEMENTS TO THE MODEL
+ICollection<ElementId> CopiedElementsIDs = null;
+using (Transaction tx = new Transaction(doc))
+{
+  tx.Start("Copying Elements from Temporary Model to Main Model");
+  CopyPasteOptions copy_paste_options = new CopyPasteOptions();
+  XYZ translation = new XYZ();
+  Transform transform = Transform.Identity;
+  CopiedElementsIDs = Autodesk.Revit.DB.ElementTransformUtils.CopyElements(
+    doc_temp,TempElementsIDsList,doc, transform, copy_paste_options);
+  tx.Commit();
+}
