@@ -1,10 +1,10 @@
-//Provide a model path
+//PROVIDE A MODEL PATH
 String path="c:\\myRevitModel.rvt"
 
 //Open your model a first time
 Document doc = commandData.Application.OpenAndActivateDocument(path).Document;
 
-//Open your model temporarily for a second time
+//OPEN THE MODEL TEMPORARILY FOR A SECOND TIME
 Document doc_temp = commandData.Application.OpenAndActivateDocument(path).Document;
 
 //FIND ALL GEOMETRICAL ELEMENTS FROM THE PRIMARY DESIGN OPTIONS IN THE TEMPORARY MODEL
@@ -13,14 +13,11 @@ PrimaryDesignOptionMemberFilter filterTemp = new PrimaryDesignOptionMemberFilter
 finalCollectorTemp.WherePasses(filterTemp);
 finalCollectorTemp.WhereElementIsNotElementType();
 finalCollectorTemp.WhereElementIsViewIndependent();
-
-List<Element> TempElements = new List<Element>();
 List<ElementId> TempElementsIDsList = new List<ElementId>();
 foreach (Element i in finalCollectorTemp)
 {
     if ((null != i.Category) && (null != i.get_Geometry(new Options())))
     {
-        TempElements.Add(i);
         TempElementsIDsList.Add(i.Id);
     }
 }
@@ -52,3 +49,6 @@ using (Transaction tx = new Transaction(doc))
     doc_temp,TempElementsIDsList,doc, transform, copy_paste_options);
   tx.Commit();
 }
+
+//CLOSE THE TEMPORARY MODEL
+doc_temp.Close(false);
