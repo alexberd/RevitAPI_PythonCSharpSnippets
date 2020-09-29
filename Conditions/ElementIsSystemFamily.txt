@@ -1,0 +1,8 @@
+//Define your ElementId
+ElementId i = 12345; 
+
+//If Element is a System Family Element --> familyInstance is null
+if (doc.GetElement(i) as Autodesk.Revit.DB.FamilyInstance != null)
+{
+
+}
