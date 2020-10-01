@@ -1,0 +1,13 @@
+bool FamilyIsSystemFamily (Element i)
+{
+  if ((i as Autodesk.Revit.DB.Family).IsEditable)
+  {
+    //IF ELEMENT IS NOT A SYSTEM FAMILY
+    return false;
+  }
+  else
+  {
+    //IF ELEMENT IS A SYSTEM FAMILY
+    return true;
+  }
+}
