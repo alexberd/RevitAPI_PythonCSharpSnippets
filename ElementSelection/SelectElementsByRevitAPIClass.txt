@@ -23,6 +23,9 @@ selection = FilteredElementCollector(doc);
 #https://www.revitapidocs.com/2019
 selection.OfClass(LinePatternElement)
 
+#EQUIVALENT TO THE ABOVE
+#selection.WherePasses(ElementClassFilter(LinePatternElement))
+
 #Define if element is a type element or not
 #selection.WhereElementIsNotElementType();
 
