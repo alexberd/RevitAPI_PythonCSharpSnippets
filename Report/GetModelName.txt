@@ -5,4 +5,5 @@ string GetModelName(Document doc)
   string CentralModel = ModelPathUtils.ConvertModelPathToUserVisiblePath((doc.GetWorksharingCentralModelPath()));
   string ModelNameWithFileExtension = Path.GetFileName(CentralModel);
   string ModelName = ModelNameWithExtension.Substring(0, ModelNameWithFileExtension.Length-4);
+  return ModelName;
 )
