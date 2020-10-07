@@ -1,5 +1,8 @@
-Document doc = commandData.Application.ActiveUIDocument.Document;
-string ProjectName = doc.ProjectInformation.Name;
-string CentralModel = ModelPathUtils.ConvertModelPathToUserVisiblePath((doc.GetWorksharingCentralModelPath()));
-string ModelNameWithFileExtension = Path.GetFileName(CentralModel);
-string ModelName = ModelNameWithExtension.Substring(0, ModelNameWithFileExtension.Length-4);
+string GetModelName(Document doc)
+{
+  //Document doc = commandData.Application.ActiveUIDocument.Document;
+  string ProjectName = doc.ProjectInformation.Name;
+  string CentralModel = ModelPathUtils.ConvertModelPathToUserVisiblePath((doc.GetWorksharingCentralModelPath()));
+  string ModelNameWithFileExtension = Path.GetFileName(CentralModel);
+  string ModelName = ModelNameWithExtension.Substring(0, ModelNameWithFileExtension.Length-4);
+)
