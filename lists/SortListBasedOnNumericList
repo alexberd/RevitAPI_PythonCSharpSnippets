@@ -1,0 +1,8 @@
+ListToSort=IN[0]
+NumericList=IN[1]
+
+output = [x for _,x in sorted(zip(NumericList,ListToSort))]
+
+OUT = output
+
+
