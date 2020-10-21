@@ -1,0 +1,4 @@
+Element SelectElementByIdNumber(Int IdNumber)
+{
+  return doc.getElement(new ElementId(IdNumber))
+}
