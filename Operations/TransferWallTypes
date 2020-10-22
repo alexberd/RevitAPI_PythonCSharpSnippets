@@ -15,7 +15,6 @@ void transferWallTypes(Document doc_source, Document doc_target, String WallType
         {
             if (wt_.Name == WallTypeName)
             {
-                //dupWT = (WallType)wt.Duplicate(wt.Name + "Dup");
                 wt_source = wt_;
                 break; //we pick only the first type with that name
             }
