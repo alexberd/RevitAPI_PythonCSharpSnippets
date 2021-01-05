@@ -9,16 +9,16 @@ clr.AddReference("RevitAPI")
 import Autodesk
 from Autodesk.Revit.DB import *
   
-# The inputs to this node will be stored as a list in the IN variables.
-data = UnwrapElement(IN[0])
+#Create a Python Node with two Inputs
+elements = UnwrapElement(IN[0])
 parameterName = IN[1]
 
 output=[]
-for i in data:
+for e in elements:
   paraExist=False
-  for para in i.Parameters:
+  for para in e.Parameters:
     p = para.Definition
-    if p.Name == parameterName: #"Classification.Uniclass.EF.Description":
+    if p.Name == parameterName:
       paraExist=True   
       if para.StorageType == Autodesk.Revit.DB.StorageType.Integer:
       	output.append(para.AsInteger())
