@@ -1,0 +1,8 @@
+static IEnumerable<FamilyInstance> GetFamilyInstancesByFamilyAndType(Document doc, string familyName, string typeName)
+{
+    return new FilteredElementCollector(doc)
+      .OfClass(typeof(FamilyInstance))
+      .Cast<FamilyInstance>()
+      .Where(x => x.Symbol.Family.Name.Equals(familyName)) // family
+      .Where(x => x.Name.Equals(typeName)); // family type               
+}
